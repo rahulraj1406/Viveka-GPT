@@ -4,7 +4,6 @@ __pycache__/
 .env.local
 node_modules/
 *.pyc
-backend/data/raw/
-backend/data/processed/
+backend/data/
 .DS_Store
 qdrant_storage/
