@@ -126,13 +126,19 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--limit", type=int, default=0,
                         help="Stop after downloading this many new files (0 = no limit)")
+    parser.add_argument("--volumes", type=str, default="",
+                        help="Comma-separated list of volumes to fetch, e.g. 3,4,5 (default: all)")
     args = parser.parse_args()
+
+    only_vols = set(int(v) for v in args.volumes.split(",") if v.strip()) if args.volumes else set()
 
     sections = get_volume_links()
     print(f"Found {len(sections)} sections across volumes")
 
     downloaded = 0
     for vol_num, section_url in tqdm(sections, desc="Sections"):
+        if only_vols and vol_num not in only_vols:
+            continue
         if args.limit and downloaded >= args.limit:
             break
         chapters = get_chapter_links(section_url)
